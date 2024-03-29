@@ -1,0 +1,131 @@
+*/main/*
+import java.io.FileNotFoundException;
+
+public class Assg04_minhee {
+
+    public static void main(String [] args) throws FileNotFoundException {
+            people p = new people("people.txt");
+            p.list("s"); // all students
+            p.list("t"); // all teachers
+            p.list("s","f", 18); // female students age>=18
+            p.list("s","m", 20); // male students age>=20
+            p.list("t","f", 30); // female teachers age>=30
+            p.list("t","m", 35); // male teachers age>=35
+            p.list("s","f", 15, 18); //female students age>=15 & age<=18
+            p.list("s","m", 15, 20); //male students age>=15 & age<=20
+            p.list("t","f", 30, 40); //female teachers age>=30 & age<=40
+            p.list("t","m", 30, 40); //male teachers age>=30 and age<=40
+        }
+}
+
+*/class/*
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class personInfo{
+
+    String studentOrTeacher;
+    String name;
+    String gender;
+
+    int age;
+
+}
+public class people {
+
+   static ArrayList<personInfo> personInfos = new ArrayList<>();
+
+
+    public static String genderType,chooseType;
+
+    public static int agenumber1, agenumber2;
+
+
+    people(String file) throws FileNotFoundException {
+
+        Scanner fileScanner = new Scanner(new File(file));
+
+        while (fileScanner.hasNext()) {
+
+            personInfo thisperson = new personInfo();
+
+            thisperson.studentOrTeacher = fileScanner.next();
+            thisperson.name = fileScanner.next();
+            thisperson.gender = fileScanner.next();
+            thisperson.age = fileScanner.nextInt();
+
+            personInfos.add(thisperson);
+        }
+
+    }
+
+
+    public void list(String chooseType1) {
+        System.out.println("List of people");
+
+
+        chooseWords(chooseType1);
+
+
+        System.out.println("type: " + chooseType);
+        for (int i = 0; i < personInfos.size(); i++) {
+            if (personInfos.get(i).studentOrTeacher.equals(chooseType1)) {
+                System.out.println(personInfos.get(i).name);
+            }
+        }
+
+
+    }
+
+        public void list (String chooseType1,String genderType1, int calculateAge){
+            System.out.println("List of people");
+            chooseWords(chooseType1);
+            genderWords(genderType1);
+        System.out.println("type: " + chooseType + " gender: " + genderType + " age: >=" + agenumber1);
+        for (int i = 0; i <  personInfos.size(); i++) {
+            if (personInfos.get(i).studentOrTeacher.equals(chooseType1)
+                    &&(personInfos.get(i).gender.equals(genderType1))&& (personInfos.get(i).age >= calculateAge)){
+                        System.out.println(personInfos.get(i).name);
+                    }
+
+                }
+
+        }
+
+    public void list (String chooseType1,String genderType1, int minAge, int maxAge) {
+
+        System.out.println("List of people");
+
+        chooseWords(chooseType1);
+       genderWords(genderType1);
+
+        System.out.println("type: " + chooseType + " gender: " + genderType + " age: >= " + minAge + " age: <= " + maxAge);
+        for (int i = 0; i < personInfos.size(); i++) {
+            if (personInfos.get(i).studentOrTeacher.equals(chooseType1)
+                    && (personInfos.get(i).gender.equals(genderType1))
+                    && (personInfos.get(i).age >= minAge) && (personInfos.get(i).age <= maxAge)) {
+
+                System.out.println(personInfos.get(i).name);
+            }
+        }
+    }
+        public void chooseWords(String chooseType1){
+            if(chooseType1.equals("s")) {
+                chooseType = "students";
+            }
+            if (chooseType1.equals("t")) {
+                chooseType = "teachers";
+            }
+        }
+                public void genderWords(String genderType1){
+            if (genderType1.equals("f")) {
+                 genderType = "female";
+            }
+            if (genderType1.equals("m")) {
+                 genderType = "male";
+            }
+        }
+
+    }
