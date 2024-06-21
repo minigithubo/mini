@@ -1,0 +1,174 @@
+package week6;
+
+import java.io.File; import java.io.FileNotFoundException; import java.util.*;
+
+public class UsersIDs {
+
+		public static boolean success = false;
+		public static Scanner console = new Scanner(System.in);
+		public static String [] errorMessage = new String [6];
+		public static ArrayList<String> list = new ArrayList<>();
+		static final String FILENAME = "IDs.txt";
+		
+		static int count;
+		
+		public static String userID = " ";
+
+		public static void main(String[] args) throws FileNotFoundException {
+
+			
+			
+			readFileList(FILENAME);
+			errorMessage();
+			showIDLists();
+		
+			while(!success) {
+				System.out.println("Create a new ID: ");
+			
+						
+				
+			 		
+					if(checkAllCondition()) {
+			    	success =true;
+			    	
+			      	System.out.println("ID " + userID + " created successfully!");
+			      	list.add(userID);
+					
+					
+					}else {
+			    	System.out.println("Invalid ID.");
+			    	
+			
+			    	if(!disAllowed()) printErrorMessage(0);
+			    	if(!checkLength()) printErrorMessage(1);
+			    	if(!upperAndLower()) printErrorMessage(2);
+			    	if(!starWith()) printErrorMessage(3);
+			    	if(!checkNumber()) printErrorMessage(4);
+			    	if(!checkSpecialNumber()) printErrorMessage(5);
+			    	
+			    	
+					}
+
+			    
+			}
+			showIDLists();
+		}
+			
+			
+			
+		
+
+		public static void  readFileList (String fileName) throws FileNotFoundException{
+			Scanner fileScanner = new Scanner(new File(fileName));
+			while(fileScanner.hasNext()) {
+				list.add(fileScanner.next());
+
+			}
+		}
+			
+		public static void showIDLists() {
+			
+			System.out.println("List of User IDs" + "("+ list.size() +")");
+			
+			for (int i = 0; i < list.size(); i++) 
+				System.out.println(list.get(i));
+				
+			}
+
+		}
+		
+			
+		public static boolean checkAllCondition() {
+	    	return (disAllowed())&& (checkLength())
+	    			&& (upperAndLower())&& (starWith())
+	    			&& (checkNumber())&& (checkSpecialNumber());
+		 	
+		}
+		
+		public static boolean disAllowed () {
+			for(int i = 0; i< list.size(); i++) {
+				if(userID.equals(list.get(i))) {
+					return false;
+			
+				}
+
+		     }
+			 return true;
+	    }
+				
+		public static boolean checkLength() {
+			int minimum = 5;
+			int maximum = 10;
+			
+			if(userID.length() >= minimum && userID.length() < maximum) {
+				return true;
+			}else {
+				
+				return false;
+			}
+		}
+				
+		public static boolean upperAndLower() {
+			
+			boolean hasUppercase = false, hasLowerCase = false;
+			for(int i = 0; i< userID.length(); i++) {
+				char c = userID.charAt(i);
+			
+				if(Character.isUpperCase(c))hasUppercase = true;
+				else if(Character.isLowerCase(c)) hasLowerCase = true;
+				
+				}
+			
+			return hasUppercase && hasLowerCase;
+		}
+			     
+		public static boolean starWith() {
+			return Character.isLetter(userID.charAt(0)); 
+		}
+		
+		public static boolean checkNumber () {
+			
+			for(int i = 0; i<= userID.length()-1; i++) {
+						
+					if(Character.isDigit(userID.charAt(i))) {
+						count++;
+						if(count>=2) {
+					
+						}
+					}
+			}	
+			return success;
+         }
+			
+			
+		
+		
+		
+		public static boolean checkSpecialNumber () {
+			for(int i = 0; i< userID.length(); i++) {
+				if(!Character.isLetterOrDigit(userID.charAt(i))){
+					return true;		
+				}
+			}
+			
+			return false;
+			   
+		}
+
+        
+		public static void errorMessage() {
+
+			errorMessage [0] = "ID alreay in use.";
+			errorMessage [1] = "ID too long.";
+			errorMessage [2] = "ID must have lower-case and upper-case.";
+			errorMessage [3] = "IID must start with a letter";
+			errorMessage [4] = "ID must have at least two number.";
+			errorMessage [5] = "ID must have at least one special characters.";
+		
+		}
+		
+		public static void printErrorMessage(int errorNumber) {
+			System.out.println(errorMessage[errorNumber]);
+		
+		}
+}
